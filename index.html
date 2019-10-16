@@ -43,17 +43,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     <link rel="shortcut icon" href="favicon.ico"/>
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124322134-3"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() { dataLayer.push(arguments); }
-
-        gtag('js', new Date());
-        gtag('config', 'UA-124322134-3');
-    </script>
-
     <style>
         body {
             background-color: #D1EAF7;
@@ -70,8 +59,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
 
         .button_player {
-            text-align: left;
+            text-align: center;
             width: 100%;
+            padding-left: 0;
+            padding-right: 0;
         }
 
         #textarea_log_input {
@@ -95,10 +86,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
 
         #div_log_view {
-            background-color: #D1EAF7;
+            background-color: white;
             float: left;
             overflow: auto;
             width: 100%;
+            padding: 0.5rem;
+            max-height: 30rem;
+        }
+
+        #div_log_view > p {
+            margin-bottom: 0.2rem;
         }
 
         .div_center { text-align: center; }
@@ -117,7 +114,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             background: transparent;
             border: 0;
             height: 34px;
-            width: inherit
+            width: inherit;
+            background: rgba(255,255,255,0.5);
+            border-radius: .25rem;
+            padding: .375rem .75rem;
+        }
+        .input_name:hover {
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
         }
     </style>
 </head>
@@ -130,9 +133,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 <div id="div_page">
     <div>
         <div class="div_center">
-            <h3 id="header_title">QQ跑团记录着色器</h3><h5 id="header_version">v2.4 by 风羽(溯洄改)</h5>
+            <h3 id="header_title">QQ跑团记录着色器</h3>
         </div>
-        <div class="div_italic">
+        <div class="div_italic" style="display: none">
             <a href="http://aligo.github.io/log-colourer.js">前辈的mirc版传送门</a><br>
             <a id="specialMode1" href="javascript:void(0);">艾德琳的文本着色器</a>
             <a id="defaultMode" href="javascript:void(0);">QQ跑团记录着色器</a>
@@ -160,15 +163,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         </div>
 
     </div>
-    <br/>
 
-    <div class="div_center">
-
-    </div>
     <div id="div_names">
-    </div>
-    <div class="div_center">
-        <a href="http://www.goddessfantasy.net/bbs/index.php?action=post;board=1209.0" target="_blank" rel="noopener">贴到风羽的果园版</a>
     </div>
 
     <div id="div_log">
@@ -198,16 +194,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 </div>
 
 <script id="html_player_grid" type="html/template">
-        <div class="col-sm-2">
+        <div class="col-lg-3 col-sm-6">
             <input type="text" class="font-control input_name" name="&id" value="&name" placeholder="删除消息请点右边开关">
         </div>
-        <div class="col-sm-2" style="min-width: 150px">
+        <div class="col-lg-2 col-sm-4">
             &select
         </div>
-        <div class="col-sm-1" style="min-width: 80px">
-            <button style="text-align: center" type="button" class="btn btn-success button_player" name="&id">On</button>
-        </div>
-        <div class="col-sm-1">
+        <div class="col-lg-1 col-sm-2">
+            <button type="button" class="btn btn-success button_player" name="&id">On</button>
         </div>
     </script>
 
@@ -215,17 +209,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     <!--采用container-fluid，使得整个页尾的宽度为100%，并设置它的背景色-->
     <footer class="container-fluid foot-wrap">
         <!--采用container，使得页尾内容居中 -->
-        <div class="container div_center">
-            <a href="http://hina.moe/coc/logPainter.php">风羽的原版着色器</a>
-            <br/>
-            <a href="https://github.com/w4123/logPainter" target="_blank" rel="noopener">前往GitHub查看源代码</a>
-        </div><!--/.container-->
-
-
         <p style="text-align: center; margin-top: 20px; color: #878B91;">
-            原作者:风羽 Copyright &copy;2017-2019 hina.moe
-            <br/>
-            修改: 溯洄 Copyright &copy;2018-2019 kokona.tech
+            <a href="https://github.com/dkwingsmt/log-painter" target="_blank" rel="noopener">GitHub</a>
         </p>
     </footer>
 </div>
@@ -590,7 +575,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
         function getPlayerGrids() {
             //2 players 1 line
-            var html = '<div class="div_center div_italic" style="color:red"><p>出现的PC名字 (点击可以修改)</p><br></div>';
+            var html = '<hr>';
             var i;
             for (i = 0; i < nameList.length; i++) {
                 if (i % 2 == 0) {
@@ -859,12 +844,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 output += logList[i].content;
                 output += "[/color]\n";
 
+                outputHTML += "<p>";
                 if (timeSwitch) {
                     outputHTML += ("<span style=\"color:" + timeColor + ";\">" + logList[i].time + "</span> ");
                 }
                 outputHTML += ("<span style=\"color:" + playerColor + ";\">" + "&lt;" + name + "&gt; ");
                 outputHTML += logList[i].content;
-                outputHTML += "</span><br>";
+                outputHTML += "</span></p>";
             }
 
             if (paletteMode) {

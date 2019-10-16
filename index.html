@@ -140,11 +140,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             <a id="specialMode1" href="javascript:void(0);">艾德琳的文本着色器</a>
             <a id="defaultMode" href="javascript:void(0);">QQ跑团记录着色器</a>
         </div>
-        <h6>将QQ聊天记录的【文本】复制到下面这个文本框中,然后点击按钮【Analyze】</h6>
 
     </div>
     <div>
-        <textarea class="form-control" id="textarea_log_input"></textarea>
+        <textarea class="form-control" id="textarea_log_input" placeholder="将QQ聊天记录的【文本】复制到这里，然后点击页面空白处。"></textarea>
     </div>
 
     <div id="div_button" class="div_center">
@@ -154,13 +153,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             <button class="button_filter btn btn-info" id="button_log_pic_text" style="margin-bottom: 2px"> [图片]过滤 On</button>
             <button class="button_filter btn btn-info" id="button_log_time" style="margin-bottom: 2px"> 显示时间 On</button>
             <button class="button_filter btn btn-info" id="button_log_nname" style="margin-bottom: 2px"> 人名头衔过滤 On</button>
-        </div>
-        <br/>
-        <div>
-            <button class="button_controller btn btn-success" id="button_log_analyze" style="margin-bottom: 2px">Analyze</button>
-            <button class="button_controller btn btn-warning" id="button_log_clear" style="margin-bottom: 2px">清除输入</button>
             <button class="button_controller btn btn-success" id="button_palette" style="margin-bottom: 2px">使用调色盘</button>
         </div>
+        <!-- <br/>
+        <div>
+            <button class="button_controller btn btn-warning" id="button_log_clear" style="margin-bottom: 2px">清除输入</button>
+        </div> -->
 
     </div>
 
@@ -168,8 +166,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     </div>
 
     <div id="div_log">
-        <h6>复制预览部分内容可得TXT文本，输出部分为果园用代码</h6>
-
         <!-- Nav tabs -->
 
         <ul class="nav nav-tabs" role="tablist">
@@ -300,14 +296,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 $.ajax({
                     url: "https://dicelogger.s3-accelerate.amazonaws.com/" + s3_url, success: function (result) {
                         $("#textarea_log_input").val(result);
-                        $("#button_log_analyze").click();
+                        analyse();
                     }
                 });
             }
             else {
                 var input = $("#textarea_log_input").val();
                 if (input != "") {
-                    $("#button_log_analyze").click();
+                    analyse();
                 }
             }
 
@@ -323,6 +319,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 $(this).text('指令过滤 On');
                 $(this).removeClass('btn-warning');
             }
+            analyse();
         });
         $("#button_log_other").click(function() {
             otherFilter = !otherFilter;
@@ -335,6 +332,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 $(this).text('(开头内容过滤 On');
                 $(this).removeClass('btn-warning');
             }
+            analyse();
         });
         $("#button_log_pic_text").click(function() {
             picTextFilter = !picTextFilter;
@@ -347,6 +345,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 $(this).text('[图片]过滤 On');
                 $(this).removeClass('btn-warning');
             }
+            analyse();
         });
 
         $("#button_log_time").click(function() {
@@ -360,6 +359,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 $(this).text('显示时间 On');
                 $(this).removeClass('btn-warning');
             }
+            analyse();
         });
 
         $("#button_log_nname").click(function() {
@@ -373,6 +373,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 $(this).text('人名头衔过滤 On');
                 $(this).removeClass('btn-warning');
             }
+            analyse();
         });
 
         $("#button_log_clear").click(function() {
@@ -389,8 +390,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             selectDivText(this.id);
         });
 
-        $("#textarea_log_output").click(function() {
+        $("#textarea_log_output").dblclick(function() {
             $(this).select();
+        });
+
+        $("#textarea_log_input").change(function() {
+            analyse();
         });
 
         function selectDivText(containerid) {
@@ -871,7 +876,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             }
         }
 
-        $("#button_log_analyze").click(function() {
+        function analyse() {
             if ($("#textarea_log_input").val() != "") {
                 $("html,body").animate({ scrollTop: $("#div_names").offset().top }, 500);
             }
@@ -899,7 +904,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                     .html(
                         '<div class="div_center div_italic" style="color:red"><p>无法识别聊天记录文本，请确认输入格式正确</p></div>');
             }
-        });
+        }
     }(jQuery, window, document));
 
 </script>

@@ -311,14 +311,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
         function updateButtons() {
             function updateButton(obj, text, value) {
-                if (!value) {
-                    obj.removeClass('btn-info');
-                    obj.text(`${text} Off`);
-                    obj.addClass('btn-warning');
-                } else {
-                    obj.addClass('btn-info');
+                if (value) {
+                    obj.addClass('btn-success');
                     obj.text(`${text} On`);
-                    obj.removeClass('btn-warning');
+                    obj.removeClass('btn-light');
+                } else {
+                    obj.addClass('btn-light');
+                    obj.text(`${text} Off`);
+                    obj.removeClass('btn-success');
                 }
             }
             updateButton($("#button_log_command"), '指令过滤', commandFilter);
@@ -409,9 +409,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
         //Color Index
         var colorList =
-            "red;green;pink;orange;purple;black;blue;yellow;beige;brown;teal;navy;maroon;limegreen;white;fuchsia;silver"
+            "black;silver;red;green;orange;purple;teal;fuchsia;yellow;beige;brown;navy;maroon;limegreen;white;blue;pink"
                 .split(';');
-        var colorNameList = "红色;绿色;粉红;橘色;紫色;黑色;蓝色;黄色;米色;棕色;蓝绿;深蓝;紫红;莱姆;白色;桃红;灰色".split(';');
+        var colorNameList = "黑色;灰色;红色;绿色;橘色;紫色;蓝绿;桃红;黄色;米色;棕色;深蓝;紫红;莱姆;白色;蓝色;粉红".split(';');
         //Default color of time
         var timeColor = "silver";
         var commandFilter = false;
@@ -627,14 +627,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
         /////////////////////////////////////////////////////////////////
         //特殊模式1
-        function parseInputSpecialMode1() {
+        function parseInputSpecialMode1(data) {
             //Initialize
             nameList = [];
             logList = [];
             $("#div_names").html("");
             $("#div_log").hide();
-
-            var data = $("#textarea_log_input").val();
 
             var reg = /(.+?)[:：](.*)/; // 2016-01-03 \d{2}:\d{2}:\d{2}/g name
 
@@ -712,14 +710,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         ///////////////////////////////////////////////
 
         //QQ聊天记录识别
-        function parseInput() {
+        function parseInput(data) {
             //Initialize
             nameList = [];
             logList = [];
             $("#div_names").html("");
             $("#div_log").hide();
 
-            var data = $("#textarea_log_input").val();
             var regHeader =
                 /\d{4}-\d{2}-\d{2} (\d{1,2}:\d{2}:\d{2}) (AM|PM)? ?([^\(]*)/; // 2016-01-03 \d{2}:\d{2}:\d{2}/g name
             var regHeader2 = /(.*?)(\([0-9]+\))? +(\d{1,2}:\d{2}:\d{2}).*/; // \d{2}:\d{2}:\d{2}/
@@ -857,17 +854,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
 
         function analyse() {
-            if ($("#textarea_log_input").val() != "") {
-                $("html,body").animate({ scrollTop: $("#div_names").offset().top }, 500);
+            var data = $("#textarea_log_input").val().trim();
+            if (data === "") {
+                return;
             }
+            $("html,body").animate({ scrollTop: $("#div_names").offset().top }, 500);
 
             var playersNum;
             switch (formatMode) {
             case 1:
-                playersNum = parseInputSpecialMode1();
+                playersNum = parseInputSpecialMode1(data);
                 break;
             default:
-                playersNum = parseInput();
+                playersNum = parseInput(data);
             }
 
             if (playersNum > 0) {

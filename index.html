@@ -308,71 +308,49 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             }
 
         });
+
+        function updateButtons() {
+            function updateButton(obj, text, value) {
+                if (!value) {
+                    obj.removeClass('btn-info');
+                    obj.text(`${text} Off`);
+                    obj.addClass('btn-warning');
+                } else {
+                    obj.addClass('btn-info');
+                    obj.text(`${text} On`);
+                    obj.removeClass('btn-warning');
+                }
+            }
+            updateButton($("#button_log_command"), '指令过滤', commandFilter);
+            updateButton($("#button_log_other"), '(开头内容过滤', otherFilter);
+            updateButton($("#button_log_pic_text"), '[图片]过滤', picTextFilter);
+            updateButton($("#button_log_time"), '显示时间', timeSwitch);
+            updateButton($("#button_log_nname"), '人名头衔过滤', nnameSwitch);
+        }
+
         $("#button_log_command").click(function() {
             commandFilter = !commandFilter;
-            if (!commandFilter) {
-                $(this).removeClass('btn-info');
-                $(this).text('指令过滤 Off');
-                $(this).addClass('btn-warning');
-            } else {
-                $(this).addClass('btn-info');
-                $(this).text('指令过滤 On');
-                $(this).removeClass('btn-warning');
-            }
+            updateButtons();
             analyse();
         });
         $("#button_log_other").click(function() {
             otherFilter = !otherFilter;
-            if (!otherFilter) {
-                $(this).removeClass('btn-info');
-                $(this).text('(开头内容过滤 Off');
-                $(this).addClass('btn-warning');
-            } else {
-                $(this).addClass('btn-info');
-                $(this).text('(开头内容过滤 On');
-                $(this).removeClass('btn-warning');
-            }
+            updateButtons();
             analyse();
         });
         $("#button_log_pic_text").click(function() {
             picTextFilter = !picTextFilter;
-            if (!picTextFilter) {
-                $(this).removeClass('btn-info');
-                $(this).text('[图片]过滤 Off');
-                $(this).addClass('btn-warning');
-            } else {
-                $(this).addClass('btn-info');
-                $(this).text('[图片]过滤 On');
-                $(this).removeClass('btn-warning');
-            }
+            updateButtons();
             analyse();
         });
-
         $("#button_log_time").click(function() {
             timeSwitch = !timeSwitch;
-            if (!timeSwitch) {
-                $(this).removeClass('btn-info');
-                $(this).text('显示时间 Off');
-                $(this).addClass('btn-warning');
-            } else {
-                $(this).addClass('btn-info');
-                $(this).text('显示时间 On');
-                $(this).removeClass('btn-warning');
-            }
+            updateButtons();
             analyse();
         });
-
         $("#button_log_nname").click(function() {
             nnameSwitch = !nnameSwitch;
-            if (!nnameSwitch) {
-                $(this).removeClass('btn-info');
-                $(this).text('人名头衔过滤 Off');
-                $(this).addClass('btn-warning');
-            } else {
-                $(this).addClass('btn-info');
-                $(this).text('人名头衔过滤 On');
-                $(this).removeClass('btn-warning');
-            }
+            updateButtons();
             analyse();
         });
 
@@ -436,12 +414,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         var colorNameList = "红色;绿色;粉红;橘色;紫色;黑色;蓝色;黄色;米色;棕色;蓝绿;深蓝;紫红;莱姆;白色;桃红;灰色".split(';');
         //Default color of time
         var timeColor = "silver";
-        var commandFilter = true;
-        var otherFilter = true;
-        var picTextFilter = true;
-        var timeSwitch = true;
+        var commandFilter = false;
+        var otherFilter = false;
+        var picTextFilter = false;
+        var timeSwitch = false;
         var paletteMode = false;
         var nnameSwitch = true;
+
+        updateButtons();
 
         ////Format Mode Dictionary
         // 0 QQ聊天记录

@@ -85,6 +85,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             width: 150px;
         }
 
+        .button_filter:not(.btn-success) {
+            color: #aaa;
+        }
+
         #div_log_view {
             background-color: white;
             float: left;
@@ -248,7 +252,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             logList = [];
             $("html,body").animate({ scrollTop: 1 }, "fast");
             $("#div_log").fadeOut("fast");
-            $("#button_palette").hide();
+            $("#button_palette").attr("disabled", true);
             $("#div_names").html("");
         }
 
@@ -276,7 +280,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             logList = [];
             $("html,body").animate({ scrollTop: 1 }, "fast");
             $("#div_log").fadeOut("fast");
-            $("#button_palette").hide();
+            $("#button_palette").attr("disabled", true);
             $("#div_names").html("");
         }
 
@@ -289,7 +293,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
         $(d).ready(function() {
             $("#div_log").hide();
-            $("#button_palette").hide();
+            $("#button_palette").attr("disabled", true);
             $("#defaultMode").hide();
             var s3_url = getQueryVariable("s3");
             if (s3_url) {
@@ -359,7 +363,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             nameList = [];
             logList = [];
             $("#div_log").fadeOut("fast");
-            $("#button_palette").hide();
+            $("#button_palette").attr("disabled", true);
             $("#textarea_log_input").val("");
             $("#div_names").html("");
         });
@@ -584,7 +588,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 registerColorSelectorAction();
             }
 
-            $("#button_palette").fadeTo("slow", 0.7);
+            $("#button_palette").attr("disabled", true);
 
             $(".button_player").click(function() {
                 var id = parseInt($(this).attr("name"));
@@ -877,7 +881,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 $("#div_log").show();
             } else {
                 $("#div_log").hide();
-                $("#button_palette").hide();
+                $("#button_palette").attr("disabled", true);
                 $("#defaultMode").hide();
                 $("#div_names")
                     .html(
